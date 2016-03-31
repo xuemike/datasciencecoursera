@@ -2,7 +2,7 @@
 title: "Reproducible Research  Course Project 1"
 author: "Humin Xue"
 date: "March 27, 2016"
-output: html_document
+output: pdf_document
 ---
 ##Introduction
 
