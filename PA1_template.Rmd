@@ -56,13 +56,12 @@ hist(activity2day$steps, breaks=10, main="Total Steps per Day with NAs", xlab="S
 ##comparing the average # of steps taken across weekdays and weekends
 
 ```{r, echo="TRUE"}
-library(lattice)
 
-activity2$date <- as.Date(activity2$date)
-activity2$dayname <- weekdays(activity2$date)
-activity2$weekend <- as.factor(ifelse(activity2$dayname == "Saturday" |
-    activity2$dayname == "Sunday", "weekend", "weekday"))
+library(lattice) 
+processed_activity$date <- as.Date(processed_activity$date)
+processed_activity$dayname <- weekdays(processed_activity$date)
+processed_activity$daytype <- ifelse(processed_activity$dayname %in% c("Saturday", "Sunday"), "Weekend", "Weekday")
 
-activity2_steps <- aggregate(steps ~ interval + weekend, activity2, mean)
-xyplot(steps ~ interval | factor(weekend), data=activity2_steps, aspect="fill", type="1", xlab="Interval", ylab="Frequency", relation="same", alternating=1)
+activity2_steps <- ddply(processed_activity, .(interval, daytype), summarize, avg=mean(steps))
+xyplot(avg ~ interval | daytype, data=activity2_steps, type="l",layout = c(2,1), main="Comparing Average Steps per Interval between weekday and weekend",xlab="Interval", ylab="Frequency")
 ```
